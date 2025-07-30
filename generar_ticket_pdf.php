@@ -19,6 +19,7 @@ $total = number_format($venta->total, 2);
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Ticket</title>
@@ -68,35 +69,41 @@ $total = number_format($venta->total, 2);
         }
     </style>
 </head>
+
 <body onload="window.print(); setTimeout(() => window.location.href='vender.php', 1000);">
 
-<h3 class="center" style="font-size:16px;">PROVCAL</h3>
-<h5 class="center">Catering & Camps</h5>
+    <div class="centrado">
+        PROVCAL
+        Catering & Camps
+    </div>
 
-<div class="spacer"></div>
+    <div class="spacer"></div>
 
-<pre>Cliente: A.M.C</pre>
-<pre><?= str_pad("Fecha: " . $fecha, 24) . str_pad("Hora: " . $hora, 24, " ", STR_PAD_LEFT) ?></pre>
+    <pre>Cliente: A.M.C</pre>
+    <pre><?= str_pad("Fecha: " . $fecha, 24) . str_pad("Hora: " . $hora, 24, " ", STR_PAD_LEFT) ?></pre>
 
-<pre><?= str_repeat("=", 48) ?></pre>
-<pre><?= str_pad("Producto", 24) . str_pad("Cant", 6, " ", STR_PAD_LEFT) . str_pad("P.U.", 8, " ", STR_PAD_LEFT) . str_pad("Total", 10, " ", STR_PAD_LEFT) ?></pre>
-<pre><?= str_repeat("=", 48) ?></pre>
+    <pre><?= str_repeat("=", 48) ?></pre>
+    <pre><?= str_pad("Producto", 24) . str_pad("Cant", 6, " ", STR_PAD_LEFT) . str_pad("P.U.", 8, " ", STR_PAD_LEFT) . str_pad("Total", 10, " ", STR_PAD_LEFT) ?></pre>
+    <pre><?= str_repeat("=", 48) ?></pre>
 
-<?php foreach ($productos as $producto): 
-    $nombre = mb_strimwidth($producto->nombre, 0, 24, "");
-    $cantidad = $producto->cantidad;
-    $precio = number_format($producto->precio, 2);
-    $subtotal = number_format($producto->precio * $producto->cantidad, 2);
-?>
-<pre><?= sprintf("%-24s%6s%8s%10s", $nombre, $cantidad, $precio, $subtotal) ?></pre>
-<?php endforeach; ?>
+    <?php foreach ($productos as $producto):
+        $nombre = mb_strimwidth($producto->nombre, 0, 24, "");
+        $cantidad = $producto->cantidad;
+        $precio = number_format($producto->precio, 2);
+        $subtotal = number_format($producto->precio * $producto->cantidad, 2);
+        ?>
+        <pre><?= sprintf("%-24s%6s%8s%10s", $nombre, $cantidad, $precio, $subtotal) ?></pre>
+    <?php endforeach; ?>
 
-<pre><?= str_repeat("=", 48) ?></pre>
-<pre class="right">TOTAL: S/. <?= $total ?></pre>
+    <pre><?= str_repeat("=", 48) ?></pre>
+    <div class="right">TOTAL: S/. <?= $total ?></div>
 
-<div class="spacer"></div>
-<h5 class="center">Gracias por su compra!</h5>
-<div class="spacer"></div>
+    <div class="spacer"></div>
+    <div class="centrado">
+        Gracias por su compra!
+    </div>
+    <div class="spacer"></div>
 
 </body>
+
 </html>
