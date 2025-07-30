@@ -586,26 +586,22 @@ function conectarBaseDatos()
 {
     $host = "metro.proxy.rlwy.net";
     $port = 55878;
-    $db = "ventas_php";
+    $db   = "ventas_php";
     $user = "root";
     $pass = "***BD_PASSWORD_REMOVED***";
     $charset = 'utf8mb4';
 
     $options = [
-        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-        \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ,
-        \PDO::ATTR_EMULATE_PREPARES => false,
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+        PDO::MYSQL_ATTR_INIT_COMMAND => "SET time_zone = '-05:00'"
     ];
 
     $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=$charset";
-
-    try {
-        $pdo = new \PDO($dsn, $user, $pass, $options);
-        return $pdo;
-    } catch (\PDOException $e) {
-        throw new \PDOException($e->getMessage(), (int) $e->getCode());
-    }
+    return new PDO($dsn, $user, $pass, $options);
 }
+
 
 
 function verificarInactividad()
