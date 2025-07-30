@@ -21,11 +21,10 @@ $total = number_format($venta->total, 2);
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ticket POS</title>
+    <title>Ticket</title>
     <style>
         * {
             font-family: monospace;
-            font-size: 12px;
         }
 
         @media print {
@@ -33,22 +32,31 @@ $total = number_format($venta->total, 2);
                 size: 58mm auto;
                 margin: 0;
             }
-
             body {
-                width: 58mm;
                 margin: 0;
-                padding: 5px;
             }
         }
 
         body {
             width: 58mm;
-            margin: auto;
             padding: 5px;
+            font-size: 11px;
         }
 
         .center {
             text-align: center;
+        }
+
+        .left {
+            text-align: left;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        .bold {
+            font-weight: bold;
         }
 
         .line {
@@ -56,63 +64,69 @@ $total = number_format($venta->total, 2);
             margin: 5px 0;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .space {
+            height: 10px;
         }
 
-        td, th {
-            padding: 2px 0;
+        .row {
+            display: flex;
+            justify-content: space-between;
         }
 
-        .totales {
+        .row-full {
+            display: flex;
+        }
+
+        .row-full .left, .row-full .right {
+            flex: 1;
+        }
+
+        .row-full .right {
             text-align: right;
-            font-weight: bold;
+        }
+
+        pre {
+            font-family: monospace;
+            font-size: 11px;
+            margin: 0;
         }
     </style>
 </head>
 <body onload="window.print(); setTimeout(() => window.location.href='vender.php', 1000);">
 
-    <div class="center">
-        <h2>PROVCAL</h2>
-        <p>Catering & Camps</p>
-    </div>
+    <div class="center bold" style="font-size: 16px;">PROVCAL</div>
+    <div class="center">Catering & Camps</div>
 
-    <p>Ticket: #<?= $idVenta ?></p>
-    <p>Fecha : <?= $fecha ?></p>
-    <p>Hora  : <?= $hora ?></p>
-    <p>Cajero: <?= $venta->cajero ?></p>
+    <div class="space"></div>
+
+    <div class="left">Cliente: A.M.C</div>
+
+    <div class="row-full">
+        <div class="left">Fecha: <?= $fecha ?></div>
+        <div class="right">Hora: <?= $hora ?></div>
+    </div>
 
     <div class="line"></div>
 
-    <table>
-        <thead>
-            <tr>
-                <th style="text-align:left">Producto</th>
-                <th style="text-align:center">Cant</th>
-                <th style="text-align:right">Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($productos as $prod): 
-                $subtotal = number_format($prod->precio * $prod->cantidad, 2);
-            ?>
-            <tr>
-                <td><?= mb_strimwidth($prod->nombre, 0, 20, '') ?></td>
-                <td style="text-align:center"><?= $prod->cantidad ?></td>
-                <td style="text-align:right">S/.<?= $subtotal ?></td>
-            </tr>
-            <?php endforeach ?>
-        </tbody>
-    </table>
+    <pre><?= str_pad("Producto", 24) . str_pad("Cant", 6, " ", STR_PAD_LEFT) . str_pad("P.U.", 8, " ", STR_PAD_LEFT) . str_pad("Total", 10, " ", STR_PAD_LEFT) ?></pre>
+    <div class="line"></div>
+
+    <?php foreach ($productos as $producto): 
+        $nombre = mb_strimwidth($producto->nombre, 0, 24, "");
+        $cantidad = $producto->cantidad;
+        $precio = number_format($producto->precio, 2);
+        $subtotal = number_format($producto->precio * $producto->cantidad, 2);
+    ?>
+        <pre><?= sprintf("%-24s%6s%8s%10s", $nombre, $cantidad, $precio, $subtotal) ?></pre>
+    <?php endforeach; ?>
 
     <div class="line"></div>
 
-    <p class="totales">TOTAL: S/. <?= $total ?></p>
+    <div class="right bold">TOTAL: S/. <?= $total ?></div>
 
-    <div class="center">
-        <p>Gracias por su compra</p>
-    </div>
+    <div class="space"></div>
+    <div class="center">Gracias por su compra!</div>
+    <div class="space"></div>
 
 </body>
 </html>
