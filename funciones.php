@@ -291,7 +291,7 @@ function registrarVenta($productos, $idUsuario, $idCliente, $total)
         );
     }
 
-    return true;
+    return $idVenta;
 }
 
 function registrarProductosVenta($productos, $idVenta)
