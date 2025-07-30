@@ -12,7 +12,8 @@ $venta = select("SELECT ventas.*, usuarios.nombre AS cajero FROM ventas
                  WHERE ventas.id = ?", [$idVenta])[0];
 
 $productos = obtenerProductosVendidos($idVenta);
-$fecha = date("d/m/Y H:i:s", strtotime($venta->fecha));
+$fecha = date("d/m/Y", strtotime($venta->fecha));
+$hora = date("H:i", strtotime($venta->fecha));
 $total = number_format($venta->total, 2);
 ?>
 
@@ -20,40 +21,75 @@ $total = number_format($venta->total, 2);
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ticket Venta</title>
+    <title>Ticket POS</title>
     <style>
-        body {
+        * {
             font-family: monospace;
-            width: 300px;
-            padding: 10px;
+            font-size: 12px;
         }
-        .centrado {
+
+        @media print {
+            @page {
+                size: 58mm auto;
+                margin: 0;
+            }
+
+            body {
+                width: 58mm;
+                margin: 0;
+                padding: 5px;
+            }
+        }
+
+        body {
+            width: 58mm;
+            margin: auto;
+            padding: 5px;
+        }
+
+        .center {
             text-align: center;
         }
-        .linea {
+
+        .line {
             border-top: 1px dashed black;
-            margin: 8px 0;
+            margin: 5px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td, th {
+            padding: 2px 0;
+        }
+
+        .totales {
+            text-align: right;
+            font-weight: bold;
         }
     </style>
 </head>
 <body onload="window.print(); setTimeout(() => window.location.href='vender.php', 1000);">
 
-    <div class="centrado">
+    <div class="center">
         <h2>PROVCAL</h2>
         <p>Catering & Camps</p>
     </div>
 
     <p>Ticket: #<?= $idVenta ?></p>
     <p>Fecha : <?= $fecha ?></p>
+    <p>Hora  : <?= $hora ?></p>
     <p>Cajero: <?= $venta->cajero ?></p>
 
-    <div class="linea"></div>
+    <div class="line"></div>
 
-    <table style="width: 100%; font-size: 14px;">
+    <table>
         <thead>
             <tr>
                 <th style="text-align:left">Producto</th>
-                <th>Cant</th>
+                <th style="text-align:center">Cant</th>
                 <th style="text-align:right">Total</th>
             </tr>
         </thead>
@@ -62,7 +98,7 @@ $total = number_format($venta->total, 2);
                 $subtotal = number_format($prod->precio * $prod->cantidad, 2);
             ?>
             <tr>
-                <td><?= $prod->nombre ?></td>
+                <td><?= mb_strimwidth($prod->nombre, 0, 20, '') ?></td>
                 <td style="text-align:center"><?= $prod->cantidad ?></td>
                 <td style="text-align:right">S/.<?= $subtotal ?></td>
             </tr>
@@ -70,12 +106,13 @@ $total = number_format($venta->total, 2);
         </tbody>
     </table>
 
-    <div class="linea"></div>
+    <div class="line"></div>
 
-    <h3 class="centrado">TOTAL: S/. <?= $total ?></h3>
+    <p class="totales">TOTAL: S/. <?= $total ?></p>
 
-    <div class="centrado">
+    <div class="center">
         <p>Gracias por su compra</p>
     </div>
+
 </body>
 </html>
