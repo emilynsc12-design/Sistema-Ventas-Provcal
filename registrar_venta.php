@@ -30,6 +30,6 @@ $_SESSION['lista'] = [];
 echo "
 <script>
     alert('Venta realizada con éxito');
-    window.location.href='ticket.php?id={$resultado}';
+    window.location.href='generar_ticket_pdf.php?id={$resultado}';
 </script>";
 ?>
