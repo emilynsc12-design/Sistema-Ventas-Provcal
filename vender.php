@@ -9,6 +9,24 @@ if (empty($_SESSION['usuario']))
 $_SESSION['lista'] = (isset($_SESSION['lista'])) ? $_SESSION['lista'] : [];
 $total = calcularTotalLista($_SESSION['lista']);
 ?>
+
+<style>
+    .modal-dialog-centered {
+        animation: fadeInDown 0.3s;
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10%);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
 <div class="container mt-3">
     <form action="agregar_producto_venta.php" method="post" class="row">
         <div class="col-6">
@@ -74,10 +92,10 @@ $total = calcularTotalLista($_SESSION['lista']);
 
             <div class="text-center mt-3">
                 <h1>Total: S/.<?= $total; ?></h1>
-                <a class="btn btn-primary btn-lg" href="registrar_venta.php">
+                <button class="btn btn-primary btn-lg" onclick="abrirModalConfirmacion()">
                     <i class="fa fa-check"></i>
                     Terminar venta
-                </a>
+                </button>
                 <a class="btn btn-danger btn-lg" href="cancelar_venta.php">
                     <i class="fa fa-times"></i>
                     Cancelar
@@ -85,4 +103,82 @@ $total = calcularTotalLista($_SESSION['lista']);
             </div>
         </div>
     <?php } ?>
+
+    <!-- Modal de confirmación -->
+    <div class="modal fade" id="ventaModal" tabindex="-1" aria-labelledby="ventaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+                <div class="modal-header">
+                    <h5 class="modal-title w-100" id="ventaModalLabel">Confirmar venta</h5>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas realizar la venta y generar el ticket?
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="confirmarVenta()"
+                        id="btnConfirmarVenta">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <iframe id="ticketFrame"
+        style="position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; border: none;"></iframe>
+
+
 </div>
+
+<script>
+    function abrirModalConfirmacion() {
+        const modal = new bootstrap.Modal(document.getElementById('ventaModal'));
+        modal.show();
+    }
+
+    function confirmarVenta() {
+        const btn = document.getElementById("btnConfirmarVenta");
+        btn.disabled = true;
+
+        fetch('registrar_venta.php', {
+            method: 'POST'
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const id = data.id_venta;
+
+                    // Cerrar el modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('ventaModal'));
+                    modal.hide();
+
+                    // Generar, imprimir y descargar el PDF
+                    const frame = document.getElementById("ticketFrame");
+                    frame.src = "generar_ticket_pdf.php?id=" + id;
+
+                    frame.onload = function () {
+                        frame.contentWindow.focus();
+                        frame.contentWindow.print();
+
+                        const a = document.createElement("a");
+                        a.href = frame.src;
+                        a.download = "ticket_" + id + ".pdf";
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+
+                        // Luego de impresión/descarga, limpiar interfaz
+                        setTimeout(() => {
+                            window.location.href = "vender.php"; // limpia la vista
+                        }, 8000); // espera breve para que imprima antes de recargar
+                    };
+                } else {
+                    alert("Error al registrar la venta.");
+                }
+                btn.disabled = false;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error inesperado.");
+                btn.disabled = false;
+            });
+    }
+</script>
