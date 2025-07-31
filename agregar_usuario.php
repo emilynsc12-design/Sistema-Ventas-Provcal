@@ -3,7 +3,8 @@ include_once "encabezado.php";
 include_once "navbar.php";
 session_start();
 
-if (empty($_SESSION['usuario'])) header("location: login.php");
+if (empty($_SESSION['usuario']))
+    header("location: login.php");
 
 ?>
 <div class="container">
@@ -12,11 +13,13 @@ if (empty($_SESSION['usuario'])) header("location: login.php");
     <form method="post">
         <div class="mb-3">
             <label for="usuario" class="form-label">Nombre de usuario</label>
-            <input type="text" name="usuario" class="form-control" id="usuario" placeholder="Escribe el nombre de usuario. Ej. Paco">
+            <input type="text" name="usuario" class="form-control" id="usuario"
+                placeholder="Escribe el nombre de usuario. Ej. Paco">
         </div>
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre completo</label>
-            <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Escribe el nombre completo del usuario">
+            <input type="text" name="nombre" class="form-control" id="nombre"
+                placeholder="Escribe el nombre completo del usuario">
         </div>
         <div class="mb-3">
             <label for="telefono" class="form-label">Teléfono</label>
@@ -24,13 +27,19 @@ if (empty($_SESSION['usuario'])) header("location: login.php");
         </div>
         <div class="mb-3">
             <label for="direccion" class="form-label">Dirección</label>
-            <input type="text" name="direccion" class="form-control" id="direccion" placeholder="Ej. Av Collar 1005 Col Las Cruces">
+            <input type="text" name="direccion" class="form-control" id="direccion"
+                placeholder="Ej. Av Collar 1005 Col Las Cruces">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" name="password" class="form-control" id="password"
+                placeholder="Escribe la contraseña">
         </div>
 
         <div class="text-center mt-3">
             <input type="submit" name="registrar" value="Registrar" class="btn btn-primary btn-lg">
             <a href="usuarios.php" class="btn btn-danger btn-lg">
-                <i class="fa fa-times"></i> 
+                <i class="fa fa-times"></i>
                 Cancelar
             </a>
         </div>
@@ -44,6 +53,15 @@ if (isset($_POST['registrar'])) {
     $nombre = htmlspecialchars($_POST['nombre'], ENT_QUOTES, 'UTF-8');
     $telefono = htmlspecialchars($_POST['telefono'], ENT_QUOTES, 'UTF-8');
     $direccion = htmlspecialchars($_POST['direccion'], ENT_QUOTES, 'UTF-8');
+    $password = $_POST['password'] ?? '';
+    if (empty($password)) {
+        echo '
+            <div class="alert alert-danger mt-3" role="alert">
+                Debes ingresar una contraseña.
+            </div>';
+        return;
+    }
+
 
     // Validación de campos vacíos
     if (empty($usuario) || empty($nombre) || empty($telefono) || empty($direccion)) {
@@ -93,8 +111,8 @@ if (isset($_POST['registrar'])) {
     }
 
     // Registrar usuario
-    $resultado = registrarUsuario($usuario, $nombre, $telefono, $direccion);
-    
+    $resultado = registrarUsuario($usuario, $nombre, $telefono, $direccion, $password);
+
     // Manejar resultado del registro
     if ($resultado) {
         echo '
@@ -109,4 +127,3 @@ if (isset($_POST['registrar'])) {
     }
 }
 ?>
-
