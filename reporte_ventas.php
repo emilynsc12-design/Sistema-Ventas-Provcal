@@ -1,4 +1,5 @@
 <?php
+ini_set('max_execution_time', 180); // 120 segundos
 include_once "encabezado.php";
 include_once "navbar.php";
 include_once "funciones.php";

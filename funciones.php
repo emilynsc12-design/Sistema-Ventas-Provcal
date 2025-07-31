@@ -1,6 +1,4 @@
 <?php
-
-define("PASSWORD_PREDETERMINADA", "PacoHunterDev");
 define("HOY", date("Y-m-d"));
 
 function iniciarSesion($usuario, $password)
@@ -65,9 +63,9 @@ function obtenerUsuarios()
     return select($sentencia);
 }
 
-function registrarUsuario($usuario, $nombre, $telefono, $direccion)
+function registrarUsuario($usuario, $nombre, $telefono, $direccion, $password)
 {
-    $password = password_hash(PASSWORD_PREDETERMINADA, PASSWORD_DEFAULT);
+    $password = password_hash($password, PASSWORD_DEFAULT);
     $sentencia = "INSERT INTO usuarios (usuario, nombre, telefono, direccion, password) VALUES (?,?,?,?,?)";
     $parametros = [$usuario, $nombre, $telefono, $direccion, $password];
     return insertar($sentencia, $parametros);
@@ -586,15 +584,15 @@ function conectarBaseDatos()
 {
     $host = "metro.proxy.rlwy.net";
     $port = 55878;
-    $db   = "ventas_php";
+    $db = "ventas_php";
     $user = "root";
     $pass = "***BD_PASSWORD_REMOVED***";
     $charset = 'utf8mb4';
 
     $options = [
-        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-        PDO::ATTR_EMULATE_PREPARES   => false,
+        PDO::ATTR_EMULATE_PREPARES => false,
         PDO::MYSQL_ATTR_INIT_COMMAND => "SET time_zone = '-05:00'"
     ];
 
