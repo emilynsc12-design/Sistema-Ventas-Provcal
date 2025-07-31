@@ -1,35 +1,31 @@
 <?php
 include_once "funciones.php";
-require __DIR__ . '/vendor/autoload.php';  // Para la librería escpos-php
+require __DIR__ . '/vendor/autoload.php';
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
 session_start();
 
-$productos = $_SESSION['lista'];
-$idUsuario = $_SESSION['idUsuario'];
-$total = calcularTotalLista($productos);
+$productos = $_SESSION['lista'] ?? [];
+$idUsuario = $_SESSION['idUsuario'] ?? null;
 $idCliente = null;
 
-if (count($productos) === 0) {
-    header("location: vender.php");
+header('Content-Type: application/json');
+
+if (count($productos) === 0 || !$idUsuario) {
+    echo json_encode(['success' => false]);
     exit;
 }
 
-$resultado = registrarVenta($productos, $idUsuario, $idCliente, $total);
+$total = calcularTotalLista($productos);
+$idVenta = registrarVenta($productos, $idUsuario, $idCliente, $total);
 
-if (!$resultado) {
-    echo "Error al registrar la venta";
-    return;
+if (!$idVenta) {
+    echo json_encode(['success' => false]);
+    exit;
 }
 
 // Limpiar lista
 $_SESSION['lista'] = [];
 
-// Redirigir
-echo "
-<script>
-    alert('Venta realizada con éxito');
-    window.location.href='generar_ticket_pdf.php?id={$resultado}';
-</script>";
-?>
+echo json_encode(['success' => true, 'id_venta' => $idVenta]);

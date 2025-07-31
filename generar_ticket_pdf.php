@@ -1,5 +1,9 @@
 <?php
 require_once 'funciones.php';
+require_once 'vendor/autoload.php';
+
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 if (!isset($_GET['id'])) {
     echo "ID de venta no especificado.";
@@ -9,14 +13,22 @@ if (!isset($_GET['id'])) {
 $idVenta = $_GET['id'];
 $venta = select("SELECT ventas.*, usuarios.nombre AS cajero FROM ventas 
                  INNER JOIN usuarios ON usuarios.id = ventas.idUsuario 
-                 WHERE ventas.id = ?", [$idVenta])[0];
+                 WHERE ventas.id = ?", [$idVenta]);
 
+if (!$venta) {
+    echo "Venta no encontrada.";
+    exit;
+}
+
+$venta = $venta[0];
 $productos = obtenerProductosVendidos($idVenta);
 $fecha = date("d/m/Y", strtotime($venta->fecha));
 $hora = date("H:i", strtotime($venta->fecha));
 $total = number_format($venta->total, 2);
-?>
 
+// HTML
+ob_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -24,86 +36,103 @@ $total = number_format($venta->total, 2);
     <meta charset="UTF-8">
     <title>Ticket</title>
     <style>
-        * {
-            font-family: monospace;
-            font-size: 15px;
-        }
-
-        @media print {
-            @page {
-                size: 58mm auto;
-                margin: 0;
-            }
-
-            body {
-                margin: 0;
-            }
+        @page {
+            size: 255pt auto;
+            margin: 0;
         }
 
         body {
-            width: 58mm;
-            padding: 8px;
+            font-family: 'share_tech_mono_normal_1f0d736d02a43e11c467969cc34f784f', monospace;
+            font-size: 17px;
+            margin: 0;
+            padding: 0;
+            width: 255pt;
+            line-height: 1.2;
         }
 
-        .center {
-            text-align: center;
-        }
-
-        .left {
-            text-align: left;
-        }
-
-        .right {
-            text-align: right;
-        }
-
-        .spacer {
-            height: 10px;
+        .texto-resaltado {
+            text-shadow: 0.5px 0.5px black;
         }
 
         pre {
-            font-family: monospace;
-            font-size: 13px;
             margin: 0;
+            padding: 0;
             white-space: pre;
         }
+
+        .encabezado {
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .encabezado2 {
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .detalle {
+            font-size: 17px;
+        }
+
+        .gracias {
+            font-size: 17px;
+            text-align: center;
+        }
     </style>
+
 </head>
 
-<body onload="window.print(); setTimeout(() => window.location.href='vender.php', 1000);">
+<body class="texto-resaltado">
+    <pre class="encabezado">PROVCAL</pre>
+    <pre class="encabezado2">Catering & Camps</pre>
+    <br>
 
-    <div class="centrado">
-        PROVCAL
-        Catering & Camps
-    </div>
+    <pre class="detalle">Cliente: A.M.C</pre>
+    <table
+        style="width: 100%; font-family: 'share_tech_mono_normal_1f0d736d02a43e11c467969cc34f784f', monospace; font-size: 17px; border-collapse: collapse; margin: 0; padding: 0;">
+        <tr>
+            <td style="text-align: left;">Fecha: <?= $fecha ?></td>
+            <td style="text-align: right;">Hora: <?= $hora ?></td>
+        </tr>
+    </table>
+    <pre class="detalle"><?= str_repeat("=", 42) ?></pre>
+    <pre class="detalle"><?= sprintf("%-14s %4s %6s %8s", "Producto", "Cant", "P.U.", "Subtotal") ?></pre>
 
-    <div class="spacer"></div>
-
-    <pre>Cliente: A.M.C</pre>
-    <pre><?= str_pad("Fecha: " . $fecha, 24) . str_pad("Hora: " . $hora, 24, " ", STR_PAD_LEFT) ?></pre>
-
-    <pre><?= str_repeat("=", 48) ?></pre>
-    <pre><?= str_pad("Producto", 24) . str_pad("Cant", 6, " ", STR_PAD_LEFT) . str_pad("P.U.", 8, " ", STR_PAD_LEFT) . str_pad("Total", 10, " ", STR_PAD_LEFT) ?></pre>
-    <pre><?= str_repeat("=", 48) ?></pre>
+    <pre class="detalle"><?= str_repeat("=", 42) ?></pre>
 
     <?php foreach ($productos as $producto):
-        $nombre = mb_strimwidth($producto->nombre, 0, 24, "");
+        $nombre = mb_strimwidth($producto->nombre, 0, 15, "");
         $cantidad = $producto->cantidad;
         $precio = number_format($producto->precio, 2);
         $subtotal = number_format($producto->precio * $producto->cantidad, 2);
         ?>
-        <pre><?= sprintf("%-24s%6s%8s%10s", $nombre, $cantidad, $precio, $subtotal) ?></pre>
+        <pre class="detalle"><?= sprintf("%-14s %4s %6s %8s", $nombre, $cantidad, $precio, $subtotal) ?></pre>
     <?php endforeach; ?>
 
-    <pre><?= str_repeat("=", 48) ?></pre>
-    <div class="right">TOTAL: S/. <?= $total ?></div>
+    <pre class="detalle"><?= str_repeat("=", 42) ?></pre>
+    <pre class="detalle"><?= sprintf("%34s", "TOTAL: S/. " . $total) ?></pre>
 
-    <div class="spacer"></div>
-    <div class="centrado">
-        Gracias por su compra!
-    </div>
-    <div class="spacer"></div>
-
+    <br><br>
+    <pre class="gracias">Gracias por su compra!</pre>
 </body>
 
 </html>
+<?php
+$html = ob_get_clean();
+
+$options = new Options();
+$options->set('defaultFont', 'share_tech_mono_normal_1f0d736d02a43e11c467969cc34f784f');
+$options->set('isRemoteEnabled', true);
+$options->set('isHtml5ParserEnabled', true);
+$options->set('isFontSubsettingEnabled', true);
+
+$dompdf = new Dompdf($options);
+$dompdf->loadHtml($html);
+$dompdf->setPaper([0, 0, 270, 1100], 'portrait');
+$dompdf->render();
+
+// Si no se está redirigiendo, entregar el PDF directamente (por si se llama directo)
+$dompdf->stream("ticket_venta_$idVenta.pdf", ["Attachment" => false]);
+exit;
+?>
