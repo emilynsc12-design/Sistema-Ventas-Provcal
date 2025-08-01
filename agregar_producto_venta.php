@@ -7,7 +7,7 @@ if (isset($_POST['agregar']) && isset($_POST['codigo']) && isset($_POST['cantida
     $cantidadIngresada = intval($_POST['cantidad']);
 
     // Validar formato del código
-    if (!ctype_digit($codigo) || strlen($codigo) != 6) {
+    if (!ctype_digit($codigo) || strlen($codigo) != 12) {
         $_SESSION['mensaje_error'] = "El código debe tener exactamente 6 dígitos numéricos.";
         header("Location: vender.php");
         exit;

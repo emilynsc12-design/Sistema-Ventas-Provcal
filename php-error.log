@@ -28,3 +28,28 @@
 [31-Jul-2025 15:55:10 America/Lima] Sesión expirada. Cerrando sesión...
 [01-Aug-2025 09:22:25 America/Lima] Tiempo de inactividad: 62825 segundos
 [01-Aug-2025 09:22:25 America/Lima] Sesión expirada. Cerrando sesión...
+[01-Aug-2025 13:10:49 America/Lima] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder in C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php:603
+Stack trace:
+#0 C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php(603): PDO->__construct('mysql:host=metr...', 'root', Object(SensitiveParameterValue), Array)
+#1 C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php(549): conectarBaseDatos()
+#2 C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php(129): select('SELECT IFNULL(S...', Array)
+#3 C:\Servidor web\Apache24\htdocs\PROVCAL\index.php(15): obtenerTotalVentas()
+#4 {main}
+  thrown in C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php on line 603
+[01-Aug-2025 13:11:24 America/Lima] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder in C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php:603
+Stack trace:
+#0 C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php(603): PDO->__construct('mysql:host=metr...', 'root', Object(SensitiveParameterValue), Array)
+#1 C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php(549): conectarBaseDatos()
+#2 C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php(7): select('SELECT id, usua...', Array)
+#3 C:\Servidor web\Apache24\htdocs\PROVCAL\iniciar_sesion.php(56): iniciarSesion('Daniel', '***USER_PASSWORD_REMOVED***')
+#4 {main}
+  thrown in C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php on line 603
+[01-Aug-2025 13:11:55 America/Lima] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Se ha anulado una conexión establecida por el software en su equipo host in C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php:603
+Stack trace:
+#0 C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php(603): PDO->__construct('mysql:host=metr...', 'root', Object(SensitiveParameterValue), Array)
+#1 C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php(549): conectarBaseDatos()
+#2 C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php(7): select('SELECT id, usua...', Array)
+#3 C:\Servidor web\Apache24\htdocs\PROVCAL\iniciar_sesion.php(56): iniciarSesion('Daniel', '***USER_PASSWORD_REMOVED***')
+#4 {main}
+  thrown in C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php on line 603
+[01-Aug-2025 13:12:11 America/Lima] Tiempo de inactividad: 8 segundos
