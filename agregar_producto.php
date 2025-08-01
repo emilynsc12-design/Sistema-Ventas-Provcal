@@ -19,8 +19,8 @@ if (isset($_POST['registrar'])) {
     // Validaciones básicas
     $errores = [];
 
-    if ($codigo === '' || !preg_match('/^\d{6}$/', $codigo))
-        $errores[] = "El código de barras debe tener 6 dígitos numéricos";
+    if ($codigo === '' || !preg_match('/^\d{12}$/', $codigo))
+        $errores[] = "El código de barras debe tener 12 dígitos numéricos";
 
     if ($nombre === '' || $compra === '' || $venta === '' || $existencia === '')
         $errores[] = "Todos los campos son obligatorios";
@@ -59,8 +59,8 @@ include_once "navbar.php";
         <div class="mb-3">
             <label for="codigo" class="form-label">Código de barras (Max. 6 Valores númericos)</label>
             <input type="text" name="codigo" class="form-control" id="codigo"
-                placeholder="Escribe el código de barras del producto" maxlength="6" pattern="\d{6}"
-                title="Debe ser un código de 6 dígitos numéricos"
+                placeholder="Escribe el código de barras del producto" maxlength="12" pattern="\d{12}"
+                title="Debe ser un código de 12 dígitos numéricos"
                 onkeypress="return event.charCode >= 48 && event.charCode <= 57">
         </div>
         <div class="mb-3">
