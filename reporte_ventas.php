@@ -21,7 +21,7 @@ $fechaInicio = $_POST['inicio'] ?? null;
 $fechaFin = $_POST['fin'] ?? null;
 $usuario = $_POST['idUsuario'] ?? null;
 
-$ventas = obtenerVentas($fechaInicio, $fechaFin, null, $usuario);
+$ventas = obtenerVentas($fechaInicio, $fechaFin, $usuario);
 
 $cartas = [
     ["titulo" => "No. ventas", "icono" => "fa fa-shopping-cart", "total" => count($ventas), "color" => "#A71D45"],
@@ -79,7 +79,6 @@ $usuarios = obtenerUsuarios();
                 <tr>
                     <th>#</th>
                     <th>Fecha</th>
-                    <th>Cliente</th>
                     <th>Total</th>
                     <th>Usuario</th>
                     <th>Productos</th>
@@ -91,7 +90,6 @@ $usuarios = obtenerUsuarios();
                     <tr>
                         <td><?= $venta->id; ?></td>
                         <td><?= $venta->fecha; ?></td>
-                        <td><?= $venta->cliente; ?></td>
                         <td>S/.<?= $venta->total; ?></td>
                         <td><?= $venta->usuario; ?></td>
                         <td>

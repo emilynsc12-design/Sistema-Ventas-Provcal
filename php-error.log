@@ -24,3 +24,5 @@
 [31-Jul-2025 14:57:59 America/Lima] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php on line 547
 [31-Jul-2025 15:09:30 America/Lima] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php on line 600
 [31-Jul-2025 15:09:30 America/Lima] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in C:\Servidor web\Apache24\htdocs\PROVCAL\productos.php on line 7
+[31-Jul-2025 15:55:10 America/Lima] Tiempo de inactividad: 3501 segundos
+[31-Jul-2025 15:55:10 America/Lima] Sesión expirada. Cerrando sesión...
