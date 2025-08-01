@@ -8,7 +8,6 @@ session_start();
 
 $productos = $_SESSION['lista'] ?? [];
 $idUsuario = $_SESSION['idUsuario'] ?? null;
-$idCliente = null;
 
 header('Content-Type: application/json');
 
@@ -18,7 +17,7 @@ if (count($productos) === 0 || !$idUsuario) {
 }
 
 $total = calcularTotalLista($productos);
-$idVenta = registrarVenta($productos, $idUsuario, $idCliente, $total);
+$idVenta = registrarVenta($productos, $idUsuario, $total); // <- solo 3 argumentos
 
 if (!$idVenta) {
     echo json_encode(['success' => false]);

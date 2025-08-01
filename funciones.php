@@ -8,8 +8,11 @@ function iniciarSesion($usuario, $password)
     if ($resultado) {
         $usuario = $resultado[0];
         $verificaPass = verificarPassword($usuario->id, $password);
-        if ($verificaPass)
+        if ($verificaPass) {
+            $_SESSION['usuario'] = $usuario->usuario;
+            $_SESSION['idUsuario'] = $usuario->id;
             return $usuario;
+        }
     }
 }
 
@@ -205,14 +208,14 @@ function obtenerGananciaVentas($ventas)
     return $total;
 }
 
-function obtenerVentas($fechaInicio, $fechaFin, $cliente, $usuario)
+function obtenerVentas($fechaInicio, $fechaFin, $usuario)
 {
     $parametros = [];
 
-    $sentencia = "SELECT ventas.*, usuarios.usuario, 'MOSTRADOR' AS cliente
+    $sentencia = "SELECT ventas.*, usuarios.usuario
     FROM ventas 
     INNER JOIN usuarios ON usuarios.id = ventas.idUsuario
-    WHERE ventas.anulada = 0";  // <-- NUEVA condición para excluir anuladas
+    WHERE ventas.anulada = 0";
 
     if (isset($usuario)) {
         $sentencia .= " AND ventas.idUsuario = ?";
@@ -237,7 +240,6 @@ function obtenerVentas($fechaInicio, $fechaFin, $cliente, $usuario)
     return agregarProductosVendidos($ventas);
 }
 
-
 function agregarProductosVendidos($ventas)
 {
     foreach ($ventas as $venta) {
@@ -256,13 +258,13 @@ function obtenerProductosVendidos($idVenta)
     return select($sentencia, [$idVenta]);
 }
 
-function registrarVenta($productos, $idUsuario, $idCliente, $total)
+function registrarVenta($productos, $idUsuario, $total)
 {
     $conexion = conectarBaseDatos();
 
     // Insertar venta
-    $sentencia = $conexion->prepare("INSERT INTO ventas (idUsuario, idCliente, total, fecha) VALUES (?, ?, ?, NOW())");
-    $sentencia->execute([$idUsuario, $idCliente, $total]);
+    $sentencia = $conexion->prepare("INSERT INTO ventas (idUsuario, total, fecha) VALUES (?, ?, NOW())");
+    $sentencia->execute([$idUsuario, $total]);
     $idVenta = $conexion->lastInsertId();
 
     foreach ($productos as $producto) {
@@ -291,6 +293,7 @@ function registrarVenta($productos, $idUsuario, $idCliente, $total)
 
     return $idVenta;
 }
+
 
 function registrarProductosVenta($productos, $idVenta)
 {
