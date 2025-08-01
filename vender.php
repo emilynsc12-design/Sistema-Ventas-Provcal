@@ -30,7 +30,7 @@ $total = calcularTotalLista($_SESSION['lista']);
 <div class="container mt-3">
     <form action="agregar_producto_venta.php" method="post" class="row">
         <div class="col-6">
-            <input class="form-control form-control-lg" name="codigo" autofocus id="codigo" pattern="\d*" maxlength="6"
+            <input class="form-control form-control-lg" name="codigo" autofocus id="codigo" pattern="\d*" maxlength="12"
                 oninput="this.value = this.value.replace(/[^0-9]/g, '')" type="text"
                 placeholder="Código de barras del producto">
         </div>

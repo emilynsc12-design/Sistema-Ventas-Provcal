@@ -28,7 +28,7 @@ $cartas = [
     <?php include_once "cartas_totales.php"; ?>
 
     <form action="" method="post" class="input-group mb-3 mt-3">
-        <input autofocus name="nombreProducto" type="text" class="form-control" placeholder="Escribe el nombre o código del producto que deseas buscar" aria-label="Nombre producto" aria-describedby="button-addon2" maxlength="6">
+        <input autofocus name="nombreProducto" type="text" class="form-control" placeholder="Escribe el nombre o código del producto que deseas buscar" aria-label="Nombre producto" aria-describedby="button-addon2" maxlength="12">
         <button type="submit" name="buscarProducto" class="btn btn-primary" id="button-addon2">
             <i class="fa fa-search"></i>
             Buscar
