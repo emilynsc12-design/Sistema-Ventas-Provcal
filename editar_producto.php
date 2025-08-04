@@ -31,17 +31,20 @@ if (isset($_POST['registrar'])) {
     } else {
         $resultado = editarProducto($codigo, $nombre, $compra, $venta, $existencia, $id);
         if ($resultado) {
-            // Comparar existencia anterior vs nueva
             $existencia_nueva = intval($existencia);
             $diferencia = $existencia_nueva - $existencia_anterior;
 
             if ($diferencia !== 0) {
-                $tipo_movimiento = $diferencia > 0 ? 'INGRESO' : 'AJUSTE';  // AJUSTE si disminuye, ya que no es una venta
+                $tipo_movimiento = $diferencia > 0 ? 'INGRESO' : 'AJUSTE';
                 $cantidad = abs($diferencia);
                 $observacion = "Ajuste manual desde edición del producto";
 
-                // Registrar en KARDEX con la función
-                registrarMovimientoKardex($id, $tipo_movimiento, $cantidad, $existencia_nueva, $observacion);
+                // Obtener stock actual (después del UPDATE)
+                $stmt = conectarBaseDatos()->prepare("SELECT existencia FROM productos WHERE id = ?");
+                $stmt->execute([$id]);
+                $stock_actualizado = $stmt->fetchColumn(); // Este ya contiene la existencia editada
+
+                registrarMovimientoKardex($id, $tipo_movimiento, $cantidad, $stock_actualizado, $observacion);
             }
 
             header("Location: productos.php");
