@@ -108,12 +108,17 @@ foreach ($productos as $producto) {
                 $datos_kardex[$id]['salidas_mes'] -= $cant;
 
             } elseif (str_contains($obs, 'stock inicial')) {
-                /*  Alta de producto: afecta saldo pero NO se cuenta
-                    como ingreso ni salida */
                 $datos_kardex[$id]['dias'][$dia]['ajuste_inicial'] += $cant;
+
+            } elseif (str_contains($obs, 'edición del producto')) {
+                // AJUSTE por edición manual del stock
+                // Si disminuyó, asumimos que fue ingreso mal registrado antes
+
+                $datos_kardex[$id]['dias'][$dia]['ajuste_inicial'] += -$cant;
+                $datos_kardex[$id]['ingresos_mes'] -= $cant;
+
             } else {
-                $datos_kardex[$id]['dias'][$dia]['ingresos'] += $cant;
-                $datos_kardex[$id]['ingresos_mes'] += $cant;
+                $datos_kardex[$id]['dias'][$dia]['ajuste_inicial'] += $cant;
             }
         }
     }
@@ -142,7 +147,7 @@ foreach ($productos as $producto) {
     }
 
     $datos_kardex[$id]['stock_final'] = $stock;
-}  
+}
 ?>
 
 
