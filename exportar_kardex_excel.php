@@ -66,18 +66,26 @@ foreach ($productos as $producto) {
     }
 
     $stock = $producto->existencia;
+    $es_pan = str_starts_with(strtolower($producto->nombre), 'pan');
+
     foreach ($fechas as $i => $fecha) {
         if ($i === 0) {
-            $datos_kardex[$id]['dias'][$fecha]['stock_inicio'] = $stock;
+            $stock_inicio = $producto->existencia;
         } else {
-            $anterior = $fechas[$i - 1];
-            $stock = $datos_kardex[$id]['dias'][$anterior]['stock_final'];
-            $datos_kardex[$id]['dias'][$fecha]['stock_inicio'] = $stock;
+            if ($es_pan) {
+                $stock_inicio = 0;
+            } else {
+                $anterior = $fechas[$i - 1];
+                $stock_inicio = $datos_kardex[$id]['dias'][$anterior]['stock_final'];
+            }
         }
+
+        $datos_kardex[$id]['dias'][$fecha]['stock_inicio'] = $stock_inicio;
 
         $ing = $datos_kardex[$id]['dias'][$fecha]['ingresos'];
         $sal = $datos_kardex[$id]['dias'][$fecha]['salidas'];
-        $stock = $stock + $ing - $sal;
+        $stock = $stock_inicio + $ing - $sal;
+
         $datos_kardex[$id]['dias'][$fecha]['stock_final'] = $stock;
     }
 

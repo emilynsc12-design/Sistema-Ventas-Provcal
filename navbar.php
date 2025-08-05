@@ -23,12 +23,16 @@
             Productos
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="usuarios.php">
-            <i class="fa fa-users"></i>
-            Usuarios
-          </a>
-        </li>
+        <?php
+        if (isset($_SESSION['usuario']) && in_array(strtolower($_SESSION['usuario']), ['Daniel', 'admin'])):
+          ?>
+          <li class="nav-item">
+            <a class="nav-link active" href="usuarios.php">
+              <i class="fa fa-users"></i>
+              Usuarios
+            </a>
+          </li>
+        <?php endif; ?>
         <li class="nav-item">
           <a class="nav-link active" href="vender.php">
             <i class="fa fa-cash-register"></i>

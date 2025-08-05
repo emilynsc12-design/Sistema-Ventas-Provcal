@@ -118,3 +118,13 @@ Stack trace:
 #3 {main}
   thrown in C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php on line 603
 [04-Aug-2025 09:14:35 America/Lima] Tiempo de inactividad: 232 segundos
+[04-Aug-2025 09:17:37 America/Lima] Tiempo de inactividad: 182 segundos
+[04-Aug-2025 10:36:31 America/Lima] Tiempo de inactividad: 4734 segundos
+[04-Aug-2025 10:36:31 America/Lima] Sesión expirada. Cerrando sesión...
+[04-Aug-2025 10:42:28 America/Lima] Tiempo de inactividad: 135 segundos
+[04-Aug-2025 16:42:36 America/Lima] Tiempo de inactividad: 21608 segundos
+[04-Aug-2025 16:42:36 America/Lima] Sesión expirada. Cerrando sesión...
+[04-Aug-2025 16:43:37 America/Lima] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php on line 552
+[04-Aug-2025 16:44:13 America/Lima] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php on line 603
+[04-Aug-2025 16:45:02 America/Lima] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php on line 603
+[04-Aug-2025 16:45:51 America/Lima] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in C:\Servidor web\Apache24\htdocs\PROVCAL\funciones.php on line 603
