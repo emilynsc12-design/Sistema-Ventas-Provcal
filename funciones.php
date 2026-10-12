@@ -583,14 +583,23 @@ function registrarMovimientoKardex($idProducto, $tipo_movimiento, $cantidad, $st
 }
 
 //CONEXION A LA BASE DE DATOS
+//  ⚠️  Los datos se leen de las variables de entorno (archivo .env, que NO se sube a Git).
+//       Nunca escribas contraseñas dentro de este archivo.
 function conectarBaseDatos()
 {
-    $host = "metro.proxy.rlwy.net";
-    $port = 55878;
-    $db = "ventas_php";
-    $user = "root";
-    $pass = "***BD_PASSWORD_REMOVED***";
+    $host = getenv('DB_HOST') ?: '';
+    $port = (int) (getenv('DB_PORT') ?: 3306);
+    $db   = getenv('DB_NAME') ?: '';
+    $user = getenv('DB_USER') ?: '';
+    $pass = getenv('DB_PASS') ?: '';
     $charset = 'utf8mb4';
+
+    if ($host === '' || $db === '' || $user === '') {
+        throw new RuntimeException(
+            'Falta la configuración de la base de datos. ' .
+            'Copia el archivo .env.example a .env y completa DB_HOST, DB_NAME, DB_USER y DB_PASS.'
+        );
+    }
 
     $options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
