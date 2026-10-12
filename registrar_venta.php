@@ -6,6 +6,12 @@ use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
 session_start();
 
+if (empty($_SESSION['usuario'])) {
+    header('Content-Type: application/json');
+    echo json_encode(['ok' => false, 'mensaje' => 'Sesion no valida']);
+    exit;
+}
+
 $productos = $_SESSION['lista'] ?? [];
 $idUsuario = $_SESSION['idUsuario'] ?? null;
 

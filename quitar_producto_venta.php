@@ -1,5 +1,10 @@
 <?php
 session_start();
+if (empty($_SESSION['usuario'])) {
+    header("Location: login.php");
+    exit;
+}
+
 $id = $_GET['id'];
 $productos = $_SESSION['lista'];
 

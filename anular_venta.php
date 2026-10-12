@@ -1,4 +1,10 @@
 <?php
+session_start();
+if (empty($_SESSION['usuario'])) {
+    header("Location: login.php");
+    exit;
+}
+
 require_once "funciones.php";
 
 if (!isset($_GET['id'])) {

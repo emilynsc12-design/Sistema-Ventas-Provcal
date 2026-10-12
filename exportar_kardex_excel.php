@@ -1,4 +1,10 @@
 <?php
+session_start();
+if (empty($_SESSION['usuario'])) {
+    header("Location: login.php");
+    exit;
+}
+
 require 'vendor/autoload.php';
 include "funciones.php";
 

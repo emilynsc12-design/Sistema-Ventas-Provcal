@@ -5,6 +5,13 @@
 # ⚠️  Credenciales de la base de datos — NUNCA subir
 .env
 
+# ⚠️  Base de datos local MariaDB (contiene hashes de contraseñas)
+#      NUNCA subir a Git
+mariadb-data/
+*.ibd
+*.frm
+my.cnf
+
 # Archivos de registro de errores
 php-error.log
 *.log

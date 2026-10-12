@@ -1,4 +1,10 @@
 <?php
+session_start();
+if (empty($_SESSION['usuario'])) {
+    header("Location: login.php");
+    exit;
+}
+
 /***** 1. Validar parámetro *****/
 $id = $_GET['id'] ?? null;
 if (!$id || !ctype_digit($id)) {

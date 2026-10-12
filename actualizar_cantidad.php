@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (empty($_SESSION['usuario'])) {
+    header("Location: login.php");
+    exit;
+}
 if (!isset($_POST['id'], $_POST['cantidad'])) {
     header("Location: vender.php");
     exit;
