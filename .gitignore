@@ -1,0 +1,22 @@
+# ============================================
+#  ARCHIVOS QUE NO SE SUBEN A GIT
+# ============================================
+
+# ⚠️  Credenciales de la base de datos — NUNCA subir
+.env
+
+# Archivos de registro de errores
+php-error.log
+*.log
+
+# Archivos del sistema
+Thumbs.db
+.DS_Store
+
+# Dependencias de Composer (ya están versionadas a propósito
+# para que Railway no necesite ejecutar "composer install")
+# /vendor/
+
+# Archivos de configuración de editores
+.vscode/
+.idea/
