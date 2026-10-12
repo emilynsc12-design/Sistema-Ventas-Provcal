@@ -1,4 +1,8 @@
 <?php
+/* Carga la configuración global (variables de entorno .env, autoload, zona horaria).
+ *  require_once evita cargarlo dos veces si la página ya incluyó encabezado.php */
+require_once __DIR__ . '/bootstrap.php';
+
 define("HOY", date("Y-m-d"));
 
 function iniciarSesion($usuario, $password)

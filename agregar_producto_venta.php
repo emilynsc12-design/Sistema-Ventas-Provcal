@@ -2,6 +2,11 @@
 include_once "funciones.php";
 session_start();
 
+if (empty($_SESSION['usuario'])) {
+    header("Location: login.php");
+    exit;
+}
+
 if (isset($_POST['agregar']) && isset($_POST['codigo']) && isset($_POST['cantidad'])) {
     $codigo = $_POST['codigo'];
     $cantidadIngresada = intval($_POST['cantidad']);
