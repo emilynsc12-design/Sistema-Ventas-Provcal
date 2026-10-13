@@ -1,0 +1,28 @@
+# ============================================================
+#  CONFIGURACIÓN DEL SERVIDOR - Sistema de Ventas PROVCAL
+#  Apache / InfinityFree / cPanel
+# ============================================================
+
+# Charset por defecto (evita letras raras como ñ y acentos)
+AddDefaultCharset UTF-8
+
+# Página de inicio por defecto
+DirectoryIndex index.php
+
+# No mostrar el listado de archivos de las carpetas
+Options -Indexes
+
+# ------------------------------------------------------------
+#  PROTECCIÓN DE ARCHIVOS SENSIBLES
+#  Sin esto, cualquiera podría descargar .env escribiendo
+#  https://tu-sitio/.env en el navegador y robar la contraseña
+#  de la base de datos.
+# ------------------------------------------------------------
+<FilesMatch "^\.env">
+    Require all denied
+</FilesMatch>
+
+# Bloquear archivos de configuración, respaldos y base de datos
+<FilesMatch "\.(log|sql|cnf|ini|bak|old|zip|tar|gz)$">
+    Require all denied
+</FilesMatch>
