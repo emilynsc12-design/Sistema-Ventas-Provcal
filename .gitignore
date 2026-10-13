@@ -4,6 +4,11 @@
 
 # ⚠️  Credenciales de la base de datos — NUNCA subir
 .env
+config_local.php
+
+# ⚠️  Contiene el hash de la contraseña del admin inicial
+#      (se sube solo en el ZIP para el hosting, no a Git)
+crear_usuario_admin.sql
 
 # ⚠️  Base de datos local MariaDB (contiene hashes de contraseñas)
 #      NUNCA subir a Git

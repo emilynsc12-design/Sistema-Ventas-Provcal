@@ -4,6 +4,16 @@
  *  – Configuración global (errores, autoload, zona horaria…)
  */
 
+/* 0️⃣  Búfer de salida
+ *      encabezado.php imprime HTML ANTES de session_start() y de las
+ *      llamadas a header(). Sin este búfer, en algunos hosting PHP ya
+ *      envió la página y la redirección tras el login falla en silencio.
+ *      Con ob_start() todo se guarda en memoria hasta el final.
+ */
+if (function_exists('ob_start') && !ob_get_level()) {
+    ob_start();
+}
+
 /* 1️⃣  Ajusta los avisos de error */
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_WARNING);
 ini_set('display_errors', '0');           // nada en pantalla
@@ -16,9 +26,30 @@ date_default_timezone_set('America/Lima');
 /* 3️⃣  Autoloader de Composer (librerías) */
 require_once __DIR__ . '/vendor/autoload.php';
 
-/* 4️⃣  Carga las variables de entorno del archivo .env
- *      (archivo local, NO se sube a Git — ver .gitignore)
+/* 4️⃣  Carga la configuración de la base de datos
+ *      Prioridad:
+ *        1) config_local.php  -> archivo PHP (más seguro: el navegador
+ *                                nunca puede descargar su contenido)
+ *        2) .env              -> archivo de texto plano
+ *      Ambos archivos están en .gitignore y NUNCA se suben a Git.
  */
+
+/* 4-a) Soporte para config_local.php */
+$rutaLocal = __DIR__ . '/config_local.php';
+if (is_readable($rutaLocal)) {
+    $cfg = include $rutaLocal;
+    if (is_array($cfg)) {
+        foreach ($cfg as $clave => $valor) {
+            if (getenv($clave) === false) {
+                $v = (string) $valor;
+                putenv("$clave=$v");
+                $_ENV[$clave] = $v;
+            }
+        }
+    }
+}
+
+/* 4-b) Soporte para .env (sobrescribe solo lo que falte) */
 function cargarVariablesEntorno(string $rutaArchivo): void
 {
     if (!is_readable($rutaArchivo)) {
