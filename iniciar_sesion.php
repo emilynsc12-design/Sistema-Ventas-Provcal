@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 include_once "encabezado.php";
 
-session_start(); // Inicia la sesión para gestionar los intentos fallidos
+if (session_status() === PHP_SESSION_NONE) session_start(); // Inicia la sesión para gestionar los intentos fallidos
 
 // Configuración del bloqueo
 $maxIntentos = 3; // Número máximo de intentos

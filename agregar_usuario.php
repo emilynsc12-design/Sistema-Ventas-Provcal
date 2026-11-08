@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 include_once "encabezado.php";
 include_once "navbar.php";
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 
 if (empty($_SESSION['usuario']))
     header("location: login.php");

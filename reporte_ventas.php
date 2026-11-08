@@ -1,9 +1,9 @@
-<?php
+﻿<?php
 ini_set('max_execution_time', 180); // 120 segundos
 include_once "encabezado.php";
 include_once "navbar.php";
 include_once "funciones.php";
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 if (empty($_SESSION['usuario']))
     header("location: login.php");
 

@@ -1,10 +1,10 @@
-<?php
+﻿<?php
 include_once "funciones.php";
 require __DIR__ . '/vendor/autoload.php';
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 
 if (empty($_SESSION['usuario'])) {
     header('Content-Type: application/json');

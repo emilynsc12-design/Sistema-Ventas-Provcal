@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /* Carga la configuración global (variables de entorno .env, autoload, zona horaria).
  *  require_once evita cargarlo dos veces si la página ya incluyó encabezado.php */
 require_once __DIR__ . '/bootstrap.php';
@@ -621,7 +621,7 @@ function conectarBaseDatos()
 function verificarInactividad()
 {
     if (session_status() === PHP_SESSION_NONE) {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) session_start();
     }
 
     if (isset($_SESSION['usuario'])) { // Cambié 'usuario_id' por 'usuario'

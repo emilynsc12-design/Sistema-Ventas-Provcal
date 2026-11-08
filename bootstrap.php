@@ -20,6 +20,20 @@ ini_set('display_errors', '0');           // nada en pantalla
 ini_set('log_errors', '1');           // pero sí al log
 ini_set('error_log', __DIR__ . '/php-error.log');
 
+/* 1️⃣.5  Sesión de usuario
+ *      Se inicia AQUÍ para que navbar.php pueda dibujar el menú.
+ *      En index.php, productos.php, vender.php, usuarios.php, etc.
+ *      el navbar se incluye ANTES del session_start() de la propia
+ *      página, así que $_SESSION llegaba vacío y el enlace a
+ *      "Usuarios" nunca se mostraba.
+ *
+ *      El guard (session_status) evita el aviso de sesión repetida
+ *      en las páginas que lo vuelven a llamar más abajo.
+ */
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 /* 2️⃣  Zona horaria de la app */
 date_default_timezone_set('America/Lima');
 

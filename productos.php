@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 include_once "encabezado.php";
 include_once "navbar.php";
 include_once "funciones.php";
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 
 if(empty($_SESSION['usuario'])) header("location: login.php");
 $nombreProducto = (isset($_POST['nombreProducto'])) ? $_POST['nombreProducto'] : null;
