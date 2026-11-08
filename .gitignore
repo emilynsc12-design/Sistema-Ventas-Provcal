@@ -25,6 +25,10 @@ php-error.log
 Thumbs.db
 .DS_Store
 
+# Dependencias de Node (los scripts de npm no usan dependencias,
+# pero por si acaso)
+node_modules/
+
 # Dependencias de Composer (ya están versionadas a propósito
 # para que Railway no necesite ejecutar "composer install")
 # /vendor/
