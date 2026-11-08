@@ -17,7 +17,6 @@ Esto enciende la **base de datos** y el **servidor web**, y se queda corriendo
 en pantalla (igual que en cualquier proyecto de TypeScript).
 
 - Abre en tu navegador: **http://127.0.0.1:8000**
-- Para detenerlo: **`Ctrl + C`**
 
 ### 2. Entrar al sistema
 
@@ -32,9 +31,6 @@ en pantalla (igual que en cualquier proyecto de TypeScript).
 |---|---|
 | `npm run dev` | Arranca base de datos + servidor web |
 | `npm run stop` | Apaga todo. Tus datos **no** se borran |
-| `npm run db:init` | Crea la base de datos, las tablas y el usuario admin |
-| `npm run publish -- "mensaje"` | Sube tus cambios a GitHub |
-
 ---
 
 ## 📁 Estructura del proyecto
