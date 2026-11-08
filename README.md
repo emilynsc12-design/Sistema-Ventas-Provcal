@@ -64,10 +64,10 @@ DB_USER=root
 DB_PASS=
 ```
 
-En un hosting conviene usar `config_local.php` en lugar de `.env`. Al ser un archivo
-PHP, el navegador no puede descargar su contenido aunque alguien escriba la URL en la
-barra de direcciones. Copia `config_local.example.php` y pon ahí los mismos valores.
-Si existen los dos archivos, se usa `config_local.php`.
+`config_local.php` hace lo mismo pero en formato PHP. Como el navegador solo ejecuta
+los archivos PHP y nunca muestra su código, no se puede descargar escribiendo la URL
+en la barra de direcciones. Copia `config_local.example.php` y pon ahí los mismos
+valores. Si existen los dos archivos, se usa `config_local.php`.
 
 ### Crear las tablas
 
@@ -80,22 +80,6 @@ mysql -u root -p < esquema.sql
 
 `crear_usuario_admin.sql` crea el usuario administrador y unos productos de ejemplo.
 Ninguno de los dos archivos se sube a Git.
-
-## Subirlo a un hosting
-
-1. Sube el contenido de la carpeta al directorio `htdocs`, excepto `mariadb-data/`,
-   `.git/`, `.env` y `config_local.php`.
-2. Crea la base de datos desde el panel del hosting.
-3. Importa `esquema.sql` y después `crear_usuario_admin.sql` con phpMyAdmin.
-4. Crea `config_local.php` en `htdocs` con los datos que te dio el panel. Ojo: en un
-   hosting el `DB_HOST` normalmente no es `localhost`, sino algo como
-   `sql300.epizy.com`.
-5. Abre tu dominio e inicia sesión.
-
-El `.htaccess` incluido bloquea la descarga pública de `.env`, para que nadie pueda
-conseguir la contraseña de la base de datos escribiendo la dirección en el navegador.
-
-`mariadb-data/` es la base de datos local de tu computadora, no se sube.
 
 ## Seguridad
 
