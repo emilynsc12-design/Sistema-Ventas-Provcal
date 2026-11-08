@@ -32,3 +32,4 @@ include_once "navbar.php"
         </div>
     </div>
 </div>
+

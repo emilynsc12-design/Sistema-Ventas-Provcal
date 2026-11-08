@@ -31,6 +31,7 @@ en pantalla (igual que en cualquier proyecto de TypeScript).
 |---|---|
 | `npm run dev` | Arranca base de datos + servidor web |
 | `npm run stop` | Apaga todo. Tus datos **no** se borran |
+
 ---
 
 ## 📁 Estructura del proyecto
@@ -70,64 +71,6 @@ DB_USER=root
 DB_PASS=tu_contrasena
 ```
 
-**Opción B — `config_local.php`** (más seguro, recomendado en hosting):
-
-Copia `config_local.example.php` a `config_local.php` y pon los mismos valores
-en formato PHP. Al ser un archivo PHP, **el navegador jamás puede descargar su contenido**.
-
-> 💡 En local basta con `.env`. Si existen ambos, se usa `config_local.php`.
-
-### Base de datos
-
-```bash
-npm run db:init
-```
-
-Ese comando crea la base de datos, las 5 tablas (`usuarios`, `productos`, `ventas`,
-`productos_ventas`, `kardex`) y el usuario admin con 8 productos de ejemplo.
-
-Si prefieres hacerlo a mano, los archivos están en la raíz:
-- `esquema.sql` → solo las tablas
-- `crear_usuario_admin.sql` → usuario admin + productos de ejemplo
-
----
-
-## 🌐 Despliegue en un hosting gratuito
-
-El proyecto está pensado para subirse tal cual a un hosting con **PHP + MySQL**
-(InfinityFree, 000webhost, AwardSpace, etc.):
-
-1. **Sube el contenido** de la carpeta (excepto `mariadb-data/`, `.git/`, `.env`
-   y `config_local.php`) al directorio `htdocs` del hosting.
-2. **Crea la base de datos** desde el panel del hosting.
-3. **Importa** `esquema.sql` y luego `crear_usuario_admin.sql` desde phpMyAdmin.
-4. **Crea `config_local.php`** en `htdocs` con los datos que te dio el panel.
-   (Recuerda: en hosting el `DB_HOST` normalmente **no** es `localhost`).
-5. Abre tu dominio y entra con `admin` / `Provcal2026!`.
-
-El archivo `.htaccess` que viene incluido **bloquea el acceso público a `.env`**,
-para que nadie pueda descargar la contraseña de la base de datos escribiendo la URL.
-
-> ⚠️ Lo único que **no** se sube es `mariadb-data/`: esa carpeta es la base de datos
-> **local** de tu computadora. En el hosting usarás la que crees en el panel.
-
----
-
-## 🔒 Seguridad
-
-Algunas cosas que se tienen en cuenta en este proyecto:
-
-- Las contraseñas de los usuarios se guardan con `password_hash()` (nunca en texto plano).
-- Las credenciales de la base de datos viven en `.env` o `config_local.php`, no en el código.
-- Todas las páginas que muestran o modifican datos validan que exista sesión iniciada.
-  Si alguien intenta abrir una de esas páginas sin entrar, lo manda al login.
-- El `.htaccess` impide que se descarguen archivos sensibles desde el navegador.
-
-> ⚠️ **Importante:** `.env`, `config_local.php` y la carpeta `mariadb-data/` **nunca**
-> deben subirse a Git. Los tres ya están ignorados en `.gitignore`.
-
----
-
 ## 🛠️ Requisitos
 
 Para correr en local:
@@ -136,8 +79,6 @@ Para correr en local:
 - **PHP** 8.2 o superior con las extensiones `pdo_mysql`, `mbstring`, `gd`, `curl` y `zip`
 - **MySQL** o **MariaDB**
 - **Composer** (solo si necesitas actualizar las librerías de `vendor/`)
-
-Para el hosting solo necesitas que soporte **PHP 8.2+** y **MySQL**.
 
 Las librerías usadas son:
 - **dompdf** → generar tickets en PDF
